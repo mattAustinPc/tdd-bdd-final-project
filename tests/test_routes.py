@@ -232,7 +232,7 @@ class TestProductRoutes(TestCase):
         self.assertEqual(len(data), name_count)
         # check the data just to be sure
         for product in data:
-            self.assertEqual(product["name"], test_name)      
+            self.assertEqual(product["name"], test_name)    
             
     def test_query_by_category(self):
         """It should Query Products by category"""
