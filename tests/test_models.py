@@ -195,7 +195,12 @@ class TestProductModel(unittest.TestCase):
         self.assertEqual(found.count(), count)
         for product in found:
             self.assertEqual(product.category, category)
-
+            
+    def test_deserialize_error_on_null(self):
+        """It should error on deserialize of null input"""
+        product = ProductFactory()
+        self.assertRaises(DataValidationError, product.deserialize,None)
+            
     def test_deserialize_error_available(self):
         """It should error on deserialize of non bool value for available"""
         product = ProductFactory()
@@ -208,9 +213,17 @@ class TestProductModel(unittest.TestCase):
             "available": product.available,
             "category": product.category.name 
         }
-        self.assertRaises(DataValidationError, product.deserialize,test_dict)     
-        
-    def test_deserialize_error_on_null(self):
-        """It should error on deserialize of null input"""
+        self.assertRaises(DataValidationError, product.deserialize,test_dict)   
+
+    def test_deserialize_error_category(self):
+        """It should error on deserialize of invalid value for category"""
         product = ProductFactory()
-        self.assertRaises(DataValidationError, product.deserialize,None)
+        test_dict =  {
+            "id": product.id,
+            "name": product.name,
+            "description": product.description,
+            "price": str(product.price),
+            "available": product.available,
+            "category": "SNJDHFHFHFHFH" # Bogus test not listed in category class
+        }
+        self.assertRaises(DataValidationError, product.deserialize,test_dict)  
