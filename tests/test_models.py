@@ -197,10 +197,10 @@ class TestProductModel(unittest.TestCase):
             self.assertEqual(product.category, category)
 
     def test_deserialize_error_available(self):
-        """It should error on non bool value for available """
-         product = ProductFactory()
-         product.available ="AVAILABLE"
-         test_dict =  {
+        """It should error on deserialize of non bool value for available"""
+        product = ProductFactory()
+        product.available ="AVAILABLE"
+        test_dict =  {
             "id": product.id,
             "name": product.name,
             "description": product.description,
@@ -208,4 +208,9 @@ class TestProductModel(unittest.TestCase):
             "available": product.available,
             "category": product.category.name 
         }
-        self.assertRaises(DataValidationError, product.deserialize,test_dict)
+        self.assertRaises(DataValidationError, product.deserialize,test_dict)     
+        
+    def test_deserialize_error_on_null(self):
+        """It should error on deserialize of null input"""
+        product = ProductFactory()
+        self.assertRaises(DataValidationError, product.deserialize,None)
