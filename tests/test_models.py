@@ -159,7 +159,7 @@ class TestProductModel(unittest.TestCase):
         # See if we get back 5 products
         products = Product.all()
         self.assertEqual(len(products), 5)
-
+    
     def test_find_by_name(self):        
         """It should Find a Product by Name"""
         products = ProductFactory.create_batch(5)
@@ -195,3 +195,17 @@ class TestProductModel(unittest.TestCase):
         self.assertEqual(found.count(), count)
         for product in found:
             self.assertEqual(product.category, category)
+
+    def test_deserialize_error_available(self):
+        """It should error on non bool value for available """
+         product = ProductFactory()
+         product.available ="AVAILABLE"
+         test_dict =  {
+            "id": product.id,
+            "name": product.name,
+            "description": product.description,
+            "price": str(product.price),
+            "available": product.available,
+            "category": product.category.name 
+        }
+        self.assertRaises(DataValidationError, product.deserialize,test_dict)
