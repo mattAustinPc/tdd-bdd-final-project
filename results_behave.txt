@@ -1,0 +1,386 @@
+(venv) theia:tdd-bdd-final-project$ behave
+Feature: The product store service back-end # features/products.feature:1
+  As a Product Store Owner
+  I need a RESTful catalog service
+  So that I can keep track of all my products
+  Background:   # features/products.feature:6
+
+  Scenario: The server is running                                   # features/products.feature:14
+    Given the following products                                    # features/steps/load_steps.py:33 1.811s
+      | name    | description     | price  | available | category   |
+      | Hat     | A red fedora    | 59.95  | True      | CLOTHS     |
+      | Shoes   | Blue shoes      | 120.50 | False     | CLOTHS     |
+      | Big Mac | 1/4 lb burger   | 5.99   | True      | FOOD       |
+      | Sheets  | Full bed sheets | 87.00  | True      | HOUSEWARES |
+    When I visit the "Home Page"                                    # features/steps/web_steps.py:36 0.297s
+    Then I should see "Product Catalog Administration" in the title # features/steps/web_steps.py:43 0.022s
+    And I should not see "404 Not Found"                            # features/steps/web_steps.py:48 0.133s
+
+  Scenario: Create a Product                                  # features/products.feature:19
+    Given the following products                              # features/steps/load_steps.py:33 0.083s
+      | name    | description     | price  | available | category   |
+      | Hat     | A red fedora    | 59.95  | True      | CLOTHS     |
+      | Shoes   | Blue shoes      | 120.50 | False     | CLOTHS     |
+      | Big Mac | 1/4 lb burger   | 5.99   | True      | FOOD       |
+      | Sheets  | Full bed sheets | 87.00  | True      | HOUSEWARES |
+    When I visit the "Home Page"                              # features/steps/web_steps.py:36 0.080s
+    And I set the "Name" to "Hammer"                          # features/steps/web_steps.py:53 0.110s
+    And I set the "Description" to "Claw hammer"              # features/steps/web_steps.py:53 0.017s
+    And I select "True" in the "Available" dropdown           # features/steps/web_steps.py:60 0.011s
+    And I select "Tools" in the "Category" dropdown           # features/steps/web_steps.py:60 0.220s
+    And I set the "Price" to "34.95"                          # features/steps/web_steps.py:53 0.015s
+    And I press the "Create" button                           # features/steps/web_steps.py:107 0.214s
+    Then I should see the message "Success"                   # features/steps/web_steps.py:127 0.013s
+    When I copy the "Id" field                                # features/steps/web_steps.py:81 0.015s
+    And I press the "Clear" button                            # features/steps/web_steps.py:107 0.224s
+    Then the "Id" field should be empty                       # features/steps/web_steps.py:72 0.013s
+    And the "Name" field should be empty                      # features/steps/web_steps.py:72 0.011s
+    And the "Description" field should be empty               # features/steps/web_steps.py:72 0.014s
+    When I paste the "Id" field                               # features/steps/web_steps.py:90 0.014s
+    And I press the "Retrieve" button                         # features/steps/web_steps.py:107 0.213s
+    Then I should see the message "Success"                   # features/steps/web_steps.py:127 0.014s
+    And I should see "Hammer" in the "Name" field             # features/steps/web_steps.py:143 0.012s
+    And I should see "Claw hammer" in the "Description" field # features/steps/web_steps.py:143 0.011s
+    And I should see "True" in the "Available" dropdown       # features/steps/web_steps.py:66 0.017s
+    And I should see "Tools" in the "Category" dropdown       # features/steps/web_steps.py:66 0.030s
+    And I should see "34.95" in the "Price" field             # features/steps/web_steps.py:143 0.013s
+
+  Scenario: Read a Product                                     # features/products.feature:42
+    Given the following products                               # features/steps/load_steps.py:33 0.067s
+      | name    | description     | price  | available | category   |
+      | Hat     | A red fedora    | 59.95  | True      | CLOTHS     |
+      | Shoes   | Blue shoes      | 120.50 | False     | CLOTHS     |
+      | Big Mac | 1/4 lb burger   | 5.99   | True      | FOOD       |
+      | Sheets  | Full bed sheets | 87.00  | True      | HOUSEWARES |
+    When I visit the "Home Page"                               # features/steps/web_steps.py:36 0.083s
+    And I set the "Name" to "Hat"                              # features/steps/web_steps.py:53 0.036s
+    And I press the "Search" button                            # features/steps/web_steps.py:107 0.214s
+    Then I should see the message "Success"                    # features/steps/web_steps.py:127 0.013s
+    When I copy the "Id" field                                 # features/steps/web_steps.py:81 0.011s
+    And I press the "Clear" button                             # features/steps/web_steps.py:107 0.212s
+    And I paste the "Id" field                                 # features/steps/web_steps.py:90 0.014s
+    And I press the "Retrieve" button                          # features/steps/web_steps.py:107 0.212s
+    Then I should see the message "Success"                    # features/steps/web_steps.py:127 0.015s
+    And I should see "Hat" in the "Name" field                 # features/steps/web_steps.py:143 0.016s
+    And I should see "A red fedora" in the "Description" field # features/steps/web_steps.py:143 0.017s
+    And I should see "True" in the "Available" dropdown        # features/steps/web_steps.py:66 0.034s
+    And I should see "Cloths" in the "Category" dropdown       # features/steps/web_steps.py:66 0.044s
+    And I should see "59.95" in the "Price" field              # features/steps/web_steps.py:143 0.019s
+
+  Scenario: Update a Product                                   # features/products.feature:58
+    Given the following products                               # features/steps/load_steps.py:33 0.084s
+      | name    | description     | price  | available | category   |
+      | Hat     | A red fedora    | 59.95  | True      | CLOTHS     |
+      | Shoes   | Blue shoes      | 120.50 | False     | CLOTHS     |
+      | Big Mac | 1/4 lb burger   | 5.99   | True      | FOOD       |
+      | Sheets  | Full bed sheets | 87.00  | True      | HOUSEWARES |
+    When I visit the "Home Page"                               # features/steps/web_steps.py:36 0.082s
+    And I set the "Name" to "Hat"                              # features/steps/web_steps.py:53 0.049s
+    And I press the "Search" button                            # features/steps/web_steps.py:107 0.219s
+    Then I should see the message "Success"                    # features/steps/web_steps.py:127 0.014s
+    And I should see "A red fedora" in the "Description" field # features/steps/web_steps.py:143 0.011s
+    When I change "Name" to "Fedora"                           # features/steps/web_steps.py:154 0.018s
+    And I press the "Update" button                            # features/steps/web_steps.py:107 0.270s
+    Then I should see the message "Success"                    # features/steps/web_steps.py:127 0.019s
+    When I copy the "Id" field                                 # features/steps/web_steps.py:81 0.012s
+    And I press the "Clear" button                             # features/steps/web_steps.py:107 0.213s
+    And I paste the "Id" field                                 # features/steps/web_steps.py:90 0.014s
+    And I press the "Retrieve" button                          # features/steps/web_steps.py:107 0.212s
+    Then I should see the message "Success"                    # features/steps/web_steps.py:127 0.012s
+    And I should see "Fedora" in the "Name" field              # features/steps/web_steps.py:143 0.012s
+    When I press the "Clear" button                            # features/steps/web_steps.py:107 0.214s
+    And I press the "Search" button                            # features/steps/web_steps.py:107 0.213s
+    Then I should see the message "Success"                    # features/steps/web_steps.py:127 0.012s
+    And I should see "Fedora" in the results                   # features/steps/web_steps.py:112 0.021s
+    And I should not see "Hat" in the results                  # features/steps/web_steps.py:122 0.024s
+
+  Scenario: Delete a Product                                   # features/products.feature:79
+    Given the following products                               # features/steps/load_steps.py:33 0.053s
+      | name    | description     | price  | available | category   |
+      | Hat     | A red fedora    | 59.95  | True      | CLOTHS     |
+      | Shoes   | Blue shoes      | 120.50 | False     | CLOTHS     |
+      | Big Mac | 1/4 lb burger   | 5.99   | True      | FOOD       |
+      | Sheets  | Full bed sheets | 87.00  | True      | HOUSEWARES |
+    When I visit the "Home Page"                               # features/steps/web_steps.py:36 0.058s
+    And I set the "Name" to "Hat"                              # features/steps/web_steps.py:53 0.030s
+    And I press the "Search" button                            # features/steps/web_steps.py:107 0.218s
+    Then I should see the message "Success"                    # features/steps/web_steps.py:127 0.012s
+    And I should see "A red fedora" in the "Description" field # features/steps/web_steps.py:143 0.010s
+    When I copy the "Id" field                                 # features/steps/web_steps.py:81 0.010s
+    And I press the "Clear" button                             # features/steps/web_steps.py:107 0.211s
+    And I paste the "Id" field                                 # features/steps/web_steps.py:90 0.018s
+    And I press the "Delete" button                            # features/steps/web_steps.py:107 0.239s
+    Then I should see the message "Product has been Deleted!"  # features/steps/web_steps.py:127 0.011s
+    When I press the "Clear" button                            # features/steps/web_steps.py:107 0.212s
+    And I press the "Search" button                            # features/steps/web_steps.py:107 0.213s
+    Then I should see the message "Success"                    # features/steps/web_steps.py:127 0.018s
+    And I should not see "Hat" in the results                  # features/steps/web_steps.py:122 0.024s
+
+  Scenario: List all products                 # features/products.feature:95
+    Given the following products              # features/steps/load_steps.py:33 0.049s
+      | name    | description     | price  | available | category   |
+      | Hat     | A red fedora    | 59.95  | True      | CLOTHS     |
+      | Shoes   | Blue shoes      | 120.50 | False     | CLOTHS     |
+      | Big Mac | 1/4 lb burger   | 5.99   | True      | FOOD       |
+      | Sheets  | Full bed sheets | 87.00  | True      | HOUSEWARES |
+    When I visit the "Home Page"              # features/steps/web_steps.py:36 0.067s
+    And I press the "Clear" button            # features/steps/web_steps.py:107 0.244s
+    And I press the "Search" button           # features/steps/web_steps.py:107 0.214s
+    Then I should see the message "Success"   # features/steps/web_steps.py:127 0.013s
+    And I should see "Hat" in the results     # features/steps/web_steps.py:112 0.024s
+    And I should see "Shoes" in the results   # features/steps/web_steps.py:112 0.022s
+    And I should see "Big Mac" in the results # features/steps/web_steps.py:112 0.028s
+    And I should see "Sheets" in the results  # features/steps/web_steps.py:112 0.024s
+
+  Scenario: Search by category                     # features/products.feature:105
+    Given the following products                   # features/steps/load_steps.py:33 0.056s
+      | name    | description     | price  | available | category   |
+      | Hat     | A red fedora    | 59.95  | True      | CLOTHS     |
+      | Shoes   | Blue shoes      | 120.50 | False     | CLOTHS     |
+      | Big Mac | 1/4 lb burger   | 5.99   | True      | FOOD       |
+      | Sheets  | Full bed sheets | 87.00  | True      | HOUSEWARES |
+    When I visit the "Home Page"                   # features/steps/web_steps.py:36 0.069s
+    And I press the "Clear" button                 # features/steps/web_steps.py:107 0.243s
+    And I select "Food" in the "Category" dropdown # features/steps/web_steps.py:60 0.230s
+    And I press the "Search" button                # features/steps/web_steps.py:107 0.234s
+    Then I should see the message "Success"        # features/steps/web_steps.py:127 0.014s
+    And I should see "Big Mac" in the results      # features/steps/web_steps.py:112 0.015s
+    And I should not see "Hat" in the results      # features/steps/web_steps.py:122 0.014s
+    And I should not see "Shoes" in the results    # features/steps/web_steps.py:122 0.017s
+    And I should not see "Sheets" in the results   # features/steps/web_steps.py:122 0.014s
+
+  Scenario: Search by available                     # features/products.feature:116
+    Given the following products                    # features/steps/load_steps.py:33 0.053s
+      | name    | description     | price  | available | category   |
+      | Hat     | A red fedora    | 59.95  | True      | CLOTHS     |
+      | Shoes   | Blue shoes      | 120.50 | False     | CLOTHS     |
+      | Big Mac | 1/4 lb burger   | 5.99   | True      | FOOD       |
+      | Sheets  | Full bed sheets | 87.00  | True      | HOUSEWARES |
+    When I visit the "Home Page"                    # features/steps/web_steps.py:36 0.078s
+    And I press the "Clear" button                  # features/steps/web_steps.py:107 0.235s
+    And I select "True" in the "Available" dropdown # features/steps/web_steps.py:60 0.246s
+    And I press the "Search" button                 # features/steps/web_steps.py:107 0.214s
+    Then I should see the message "Success"         # features/steps/web_steps.py:127 0.016s
+    And I should see "Hat" in the results           # features/steps/web_steps.py:112 0.019s
+    And I should see "Big Mac" in the results       # features/steps/web_steps.py:112 0.018s
+    And I should see "Sheets" in the results        # features/steps/web_steps.py:112 0.017s
+    And I should not see "Shoes" in the results     # features/steps/web_steps.py:122 0.018s
+
+  Scenario: Search by available                     # features/products.feature:127
+    Given the following products                    # features/steps/load_steps.py:33 0.054s
+      | name    | description     | price  | available | category   |
+      | Hat     | A red fedora    | 59.95  | True      | CLOTHS     |
+      | Shoes   | Blue shoes      | 120.50 | False     | CLOTHS     |
+      | Big Mac | 1/4 lb burger   | 5.99   | True      | FOOD       |
+      | Sheets  | Full bed sheets | 87.00  | True      | HOUSEWARES |
+    When I visit the "Home Page"                    # features/steps/web_steps.py:36 0.078s
+    And I press the "Clear" button                  # features/steps/web_steps.py:107 0.265s
+    And I select "True" in the "Available" dropdown # features/steps/web_steps.py:60 0.241s
+    And I press the "Search" button                 # features/steps/web_steps.py:107 0.228s
+    Then I should see the message "Success"         # features/steps/web_steps.py:127 0.015s
+    And I should see "Hat" in the results           # features/steps/web_steps.py:112 0.021s
+    And I should see "Big Mac" in the results       # features/steps/web_steps.py:112 0.021s
+    And I should see "Sheets" in the results        # features/steps/web_steps.py:112 0.020s
+    And I should not see "Shoes" in the results     # features/steps/web_steps.py:122 0.020s
+
+1 feature passed, 0 failed, 0 skipped
+9 scenarios passed, 0 failed, 0 skipped
+115 steps passed, 0 failed, 0 skipped, 0 undefined
+Took 0m11.163s
+(venv) theia:project$ behave
+ConfigError: No steps directory in '/home/project/features'
+(venv) theia:project$ cd tdd-bdd-final-project
+(venv) theia:tdd-bdd-final-project$ dir
+Dockerfile  LICENSE  Makefile  Procfile  README.md  bin  dot-env-example  features  requirements.txt  service  setup.cfg  tests
+(venv) theia:tdd-bdd-final-project$ ls
+Dockerfile  LICENSE  Makefile  Procfile  README.md  bin  dot-env-example  features  requirements.txt  service  setup.cfg  tests
+(venv) theia:tdd-bdd-final-project$ behave
+Feature: The product store service back-end # features/products.feature:1
+  As a Product Store Owner
+  I need a RESTful catalog service
+  So that I can keep track of all my products
+  Background:   # features/products.feature:6
+
+  Scenario: The server is running                                   # features/products.feature:14
+    Given the following products                                    # features/steps/load_steps.py:33 1.811s
+      | name    | description     | price  | available | category   |
+      | Hat     | A red fedora    | 59.95  | True      | CLOTHS     |
+      | Shoes   | Blue shoes      | 120.50 | False     | CLOTHS     |
+      | Big Mac | 1/4 lb burger   | 5.99   | True      | FOOD       |
+      | Sheets  | Full bed sheets | 87.00  | True      | HOUSEWARES |
+    When I visit the "Home Page"                                    # features/steps/web_steps.py:36 0.297s
+    Then I should see "Product Catalog Administration" in the title # features/steps/web_steps.py:43 0.022s
+    And I should not see "404 Not Found"                            # features/steps/web_steps.py:48 0.133s
+
+  Scenario: Create a Product                                  # features/products.feature:19
+    Given the following products                              # features/steps/load_steps.py:33 0.083s
+      | name    | description     | price  | available | category   |
+      | Hat     | A red fedora    | 59.95  | True      | CLOTHS     |
+      | Shoes   | Blue shoes      | 120.50 | False     | CLOTHS     |
+      | Big Mac | 1/4 lb burger   | 5.99   | True      | FOOD       |
+      | Sheets  | Full bed sheets | 87.00  | True      | HOUSEWARES |
+    When I visit the "Home Page"                              # features/steps/web_steps.py:36 0.080s
+    And I set the "Name" to "Hammer"                          # features/steps/web_steps.py:53 0.110s
+    And I set the "Description" to "Claw hammer"              # features/steps/web_steps.py:53 0.017s
+    And I select "True" in the "Available" dropdown           # features/steps/web_steps.py:60 0.011s
+    And I select "Tools" in the "Category" dropdown           # features/steps/web_steps.py:60 0.220s
+    And I set the "Price" to "34.95"                          # features/steps/web_steps.py:53 0.015s
+    And I press the "Create" button                           # features/steps/web_steps.py:107 0.214s
+    Then I should see the message "Success"                   # features/steps/web_steps.py:127 0.013s
+    When I copy the "Id" field                                # features/steps/web_steps.py:81 0.015s
+    And I press the "Clear" button                            # features/steps/web_steps.py:107 0.224s
+    Then the "Id" field should be empty                       # features/steps/web_steps.py:72 0.013s
+    And the "Name" field should be empty                      # features/steps/web_steps.py:72 0.011s
+    And the "Description" field should be empty               # features/steps/web_steps.py:72 0.014s
+    When I paste the "Id" field                               # features/steps/web_steps.py:90 0.014s
+    And I press the "Retrieve" button                         # features/steps/web_steps.py:107 0.213s
+    Then I should see the message "Success"                   # features/steps/web_steps.py:127 0.014s
+    And I should see "Hammer" in the "Name" field             # features/steps/web_steps.py:143 0.012s
+    And I should see "Claw hammer" in the "Description" field # features/steps/web_steps.py:143 0.011s
+    And I should see "True" in the "Available" dropdown       # features/steps/web_steps.py:66 0.017s
+    And I should see "Tools" in the "Category" dropdown       # features/steps/web_steps.py:66 0.030s
+    And I should see "34.95" in the "Price" field             # features/steps/web_steps.py:143 0.013s
+
+  Scenario: Read a Product                                     # features/products.feature:42
+    Given the following products                               # features/steps/load_steps.py:33 0.067s
+      | name    | description     | price  | available | category   |
+      | Hat     | A red fedora    | 59.95  | True      | CLOTHS     |
+      | Shoes   | Blue shoes      | 120.50 | False     | CLOTHS     |
+      | Big Mac | 1/4 lb burger   | 5.99   | True      | FOOD       |
+      | Sheets  | Full bed sheets | 87.00  | True      | HOUSEWARES |
+    When I visit the "Home Page"                               # features/steps/web_steps.py:36 0.083s
+    And I set the "Name" to "Hat"                              # features/steps/web_steps.py:53 0.036s
+    And I press the "Search" button                            # features/steps/web_steps.py:107 0.214s
+    Then I should see the message "Success"                    # features/steps/web_steps.py:127 0.013s
+    When I copy the "Id" field                                 # features/steps/web_steps.py:81 0.011s
+    And I press the "Clear" button                             # features/steps/web_steps.py:107 0.212s
+    And I paste the "Id" field                                 # features/steps/web_steps.py:90 0.014s
+    And I press the "Retrieve" button                          # features/steps/web_steps.py:107 0.212s
+    Then I should see the message "Success"                    # features/steps/web_steps.py:127 0.015s
+    And I should see "Hat" in the "Name" field                 # features/steps/web_steps.py:143 0.016s
+    And I should see "A red fedora" in the "Description" field # features/steps/web_steps.py:143 0.017s
+    And I should see "True" in the "Available" dropdown        # features/steps/web_steps.py:66 0.034s
+    And I should see "Cloths" in the "Category" dropdown       # features/steps/web_steps.py:66 0.044s
+    And I should see "59.95" in the "Price" field              # features/steps/web_steps.py:143 0.019s
+
+  Scenario: Update a Product                                   # features/products.feature:58
+    Given the following products                               # features/steps/load_steps.py:33 0.084s
+      | name    | description     | price  | available | category   |
+      | Hat     | A red fedora    | 59.95  | True      | CLOTHS     |
+      | Shoes   | Blue shoes      | 120.50 | False     | CLOTHS     |
+      | Big Mac | 1/4 lb burger   | 5.99   | True      | FOOD       |
+      | Sheets  | Full bed sheets | 87.00  | True      | HOUSEWARES |
+    When I visit the "Home Page"                               # features/steps/web_steps.py:36 0.082s
+    And I set the "Name" to "Hat"                              # features/steps/web_steps.py:53 0.049s
+    And I press the "Search" button                            # features/steps/web_steps.py:107 0.219s
+    Then I should see the message "Success"                    # features/steps/web_steps.py:127 0.014s
+    And I should see "A red fedora" in the "Description" field # features/steps/web_steps.py:143 0.011s
+    When I change "Name" to "Fedora"                           # features/steps/web_steps.py:154 0.018s
+    And I press the "Update" button                            # features/steps/web_steps.py:107 0.270s
+    Then I should see the message "Success"                    # features/steps/web_steps.py:127 0.019s
+    When I copy the "Id" field                                 # features/steps/web_steps.py:81 0.012s
+    And I press the "Clear" button                             # features/steps/web_steps.py:107 0.213s
+    And I paste the "Id" field                                 # features/steps/web_steps.py:90 0.014s
+    And I press the "Retrieve" button                          # features/steps/web_steps.py:107 0.212s
+    Then I should see the message "Success"                    # features/steps/web_steps.py:127 0.012s
+    And I should see "Fedora" in the "Name" field              # features/steps/web_steps.py:143 0.012s
+    When I press the "Clear" button                            # features/steps/web_steps.py:107 0.214s
+    And I press the "Search" button                            # features/steps/web_steps.py:107 0.213s
+    Then I should see the message "Success"                    # features/steps/web_steps.py:127 0.012s
+    And I should see "Fedora" in the results                   # features/steps/web_steps.py:112 0.021s
+    And I should not see "Hat" in the results                  # features/steps/web_steps.py:122 0.024s
+
+  Scenario: Delete a Product                                   # features/products.feature:79
+    Given the following products                               # features/steps/load_steps.py:33 0.053s
+      | name    | description     | price  | available | category   |
+      | Hat     | A red fedora    | 59.95  | True      | CLOTHS     |
+      | Shoes   | Blue shoes      | 120.50 | False     | CLOTHS     |
+      | Big Mac | 1/4 lb burger   | 5.99   | True      | FOOD       |
+      | Sheets  | Full bed sheets | 87.00  | True      | HOUSEWARES |
+    When I visit the "Home Page"                               # features/steps/web_steps.py:36 0.058s
+    And I set the "Name" to "Hat"                              # features/steps/web_steps.py:53 0.030s
+    And I press the "Search" button                            # features/steps/web_steps.py:107 0.218s
+    Then I should see the message "Success"                    # features/steps/web_steps.py:127 0.012s
+    And I should see "A red fedora" in the "Description" field # features/steps/web_steps.py:143 0.010s
+    When I copy the "Id" field                                 # features/steps/web_steps.py:81 0.010s
+    And I press the "Clear" button                             # features/steps/web_steps.py:107 0.211s
+    And I paste the "Id" field                                 # features/steps/web_steps.py:90 0.018s
+    And I press the "Delete" button                            # features/steps/web_steps.py:107 0.239s
+    Then I should see the message "Product has been Deleted!"  # features/steps/web_steps.py:127 0.011s
+    When I press the "Clear" button                            # features/steps/web_steps.py:107 0.212s
+    And I press the "Search" button                            # features/steps/web_steps.py:107 0.213s
+    Then I should see the message "Success"                    # features/steps/web_steps.py:127 0.018s
+    And I should not see "Hat" in the results                  # features/steps/web_steps.py:122 0.024s
+
+  Scenario: List all products                 # features/products.feature:95
+    Given the following products              # features/steps/load_steps.py:33 0.049s
+      | name    | description     | price  | available | category   |
+      | Hat     | A red fedora    | 59.95  | True      | CLOTHS     |
+      | Shoes   | Blue shoes      | 120.50 | False     | CLOTHS     |
+      | Big Mac | 1/4 lb burger   | 5.99   | True      | FOOD       |
+      | Sheets  | Full bed sheets | 87.00  | True      | HOUSEWARES |
+    When I visit the "Home Page"              # features/steps/web_steps.py:36 0.067s
+    And I press the "Clear" button            # features/steps/web_steps.py:107 0.244s
+    And I press the "Search" button           # features/steps/web_steps.py:107 0.214s
+    Then I should see the message "Success"   # features/steps/web_steps.py:127 0.013s
+    And I should see "Hat" in the results     # features/steps/web_steps.py:112 0.024s
+    And I should see "Shoes" in the results   # features/steps/web_steps.py:112 0.022s
+    And I should see "Big Mac" in the results # features/steps/web_steps.py:112 0.028s
+    And I should see "Sheets" in the results  # features/steps/web_steps.py:112 0.024s
+
+  Scenario: Search by category                     # features/products.feature:105
+    Given the following products                   # features/steps/load_steps.py:33 0.056s
+      | name    | description     | price  | available | category   |
+      | Hat     | A red fedora    | 59.95  | True      | CLOTHS     |
+      | Shoes   | Blue shoes      | 120.50 | False     | CLOTHS     |
+      | Big Mac | 1/4 lb burger   | 5.99   | True      | FOOD       |
+      | Sheets  | Full bed sheets | 87.00  | True      | HOUSEWARES |
+    When I visit the "Home Page"                   # features/steps/web_steps.py:36 0.069s
+    And I press the "Clear" button                 # features/steps/web_steps.py:107 0.243s
+    And I select "Food" in the "Category" dropdown # features/steps/web_steps.py:60 0.230s
+    And I press the "Search" button                # features/steps/web_steps.py:107 0.234s
+    Then I should see the message "Success"        # features/steps/web_steps.py:127 0.014s
+    And I should see "Big Mac" in the results      # features/steps/web_steps.py:112 0.015s
+    And I should not see "Hat" in the results      # features/steps/web_steps.py:122 0.014s
+    And I should not see "Shoes" in the results    # features/steps/web_steps.py:122 0.017s
+    And I should not see "Sheets" in the results   # features/steps/web_steps.py:122 0.014s
+
+  Scenario: Search by available                     # features/products.feature:116
+    Given the following products                    # features/steps/load_steps.py:33 0.053s
+      | name    | description     | price  | available | category   |
+      | Hat     | A red fedora    | 59.95  | True      | CLOTHS     |
+      | Shoes   | Blue shoes      | 120.50 | False     | CLOTHS     |
+      | Big Mac | 1/4 lb burger   | 5.99   | True      | FOOD       |
+      | Sheets  | Full bed sheets | 87.00  | True      | HOUSEWARES |
+    When I visit the "Home Page"                    # features/steps/web_steps.py:36 0.078s
+    And I press the "Clear" button                  # features/steps/web_steps.py:107 0.235s
+    And I select "True" in the "Available" dropdown # features/steps/web_steps.py:60 0.246s
+    And I press the "Search" button                 # features/steps/web_steps.py:107 0.214s
+    Then I should see the message "Success"         # features/steps/web_steps.py:127 0.016s
+    And I should see "Hat" in the results           # features/steps/web_steps.py:112 0.019s
+    And I should see "Big Mac" in the results       # features/steps/web_steps.py:112 0.018s
+    And I should see "Sheets" in the results        # features/steps/web_steps.py:112 0.017s
+    And I should not see "Shoes" in the results     # features/steps/web_steps.py:122 0.018s
+
+  Scenario: Search by available                     # features/products.feature:127
+    Given the following products                    # features/steps/load_steps.py:33 0.054s
+      | name    | description     | price  | available | category   |
+      | Hat     | A red fedora    | 59.95  | True      | CLOTHS     |
+      | Shoes   | Blue shoes      | 120.50 | False     | CLOTHS     |
+      | Big Mac | 1/4 lb burger   | 5.99   | True      | FOOD       |
+      | Sheets  | Full bed sheets | 87.00  | True      | HOUSEWARES |
+    When I visit the "Home Page"                    # features/steps/web_steps.py:36 0.078s
+    And I press the "Clear" button                  # features/steps/web_steps.py:107 0.265s
+    And I select "True" in the "Available" dropdown # features/steps/web_steps.py:60 0.241s
+    And I press the "Search" button                 # features/steps/web_steps.py:107 0.228s
+    Then I should see the message "Success"         # features/steps/web_steps.py:127 0.015s
+    And I should see "Hat" in the results           # features/steps/web_steps.py:112 0.021s
+    And I should see "Big Mac" in the results       # features/steps/web_steps.py:112 0.021s
+    And I should see "Sheets" in the results        # features/steps/web_steps.py:112 0.020s
+    And I should not see "Shoes" in the results     # features/steps/web_steps.py:122 0.020s
+
+1 feature passed, 0 failed, 0 skipped
+9 scenarios passed, 0 failed, 0 skipped
+115 steps passed, 0 failed, 0 skipped, 0 undefined
+Took 0m11.163s
+(venv) theia:tdd-bdd-final-project$ 

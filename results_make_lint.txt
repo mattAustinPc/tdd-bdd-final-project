@@ -1,0 +1,10 @@
+(venv) theia:tdd-bdd-final-project$ make lint
+Running linting...
+flake8 service tests --count --select=E9,F63,F7,F82 --show-source --statistics
+0
+flake8 service tests --count --max-complexity=10 --max-line-length=127 --statistics
+0
+pylint service tests --max-line-length=127
+
+--------------------------------------------------------------------
+Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)

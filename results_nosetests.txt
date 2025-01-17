@@ -1,0 +1,56 @@
+(venv) theia:tdd-bdd-final-project$ nosetests
+
+Test Flask CLI Commands
+- It should call the db-create command
+
+Test Cases for Product Model
+- It should Create a product and add it to the database
+- It should Create a product and assert that it exists
+- It should Delete a Product
+- It should error on deserialize of non bool value for available
+- It should error on deserialize of invalid value for category
+- It should error on deserialize of null input
+- It should Find Products by Availability
+- It should Find Products by Category
+- It should Find a Product by Name
+- It should Find a Product by Price
+- It should Find a Product by Price as a string
+- It should List all Products in the database
+- It should Read a Product
+- It should Update a Product
+- It should error on attempt to update a Product when no id provided
+
+Product Service tests
+- It should Create a new Product
+- It should not Create a Product with no Content-Type
+- It should not Create a Product without a name
+- It should not Create a Product with wrong Content-Type
+- It should Delete a Product
+- It should Get a single Product
+- It should Get a list of Products
+- It should not Get a Product thats not found
+- It should be healthy
+- It should return the index page
+- It should Query Products by availability
+- It should Query Products by category
+- It should Query Products by name
+- It should Update an existing Product
+- It should not Update a Product not found
+
+Name                               Stmts   Miss  Cover   Missing
+----------------------------------------------------------------
+service/__init__.py                   19      3    84%   53-56
+service/common/__init__.py             3      0   100%
+service/common/cli_commands.py         7      0   100%
+service/common/error_handlers.py      33      6    82%   59-61, 89-91
+service/common/log_handlers.py        12      1    92%   36
+service/common/status.py              64      0   100%
+service/config.py                      7      0   100%
+service/models.py                     92      0   100%
+service/routes.py                     82      0   100%
+----------------------------------------------------------------
+TOTAL                                319     10    97%
+----------------------------------------------------------------------
+Ran 31 tests in 1.225s
+
+OK
