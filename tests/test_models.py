@@ -159,7 +159,7 @@ class TestProductModel(unittest.TestCase):
         # See if we get back 5 products
         products = Product.all()
         self.assertEqual(len(products), 5)
-        
+
     def test_find_by_name(self):
         """It should Find a Product by Name"""
         products = ProductFactory.create_batch(5)
