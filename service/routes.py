@@ -84,15 +84,10 @@ def create_products():
     product.deserialize(data)
     product.create()
     app.logger.info("Product with new id [%s] saved!", product.id)
-
     message = product.serialize()
-
-    #
-    # Uncomment this line of code once you implement READ A PRODUCT
-    #
-    # location_url = url_for("get_products", product_id=product.id, _external=True)
-    location_url = "/"  # delete once READ is implemented
+    location_url = url_for("get_products", product_id=product.id, _external=True)
     return jsonify(message), status.HTTP_201_CREATED, {"Location": location_url}
+
 
 ######################################################################
 # LIST PRODUCTS
@@ -127,7 +122,8 @@ def list_products():
     results = [product.serialize() for product in products]
     app.logger.info("[%s] Products returned", len(results))
     return results, status.HTTP_200_OK
-    
+
+
 ######################################################################
 # R E A D   A   P R O D U C T
 ######################################################################
@@ -144,11 +140,10 @@ def get_products(product_id):
     app.logger.info("Returning product: %s", product.name)
     return product.serialize(), status.HTTP_200_OK
 
+
 ######################################################################
 # U P D A T E   A   P R O D U C T
 ######################################################################
-
-#
 @app.route("/products/<int:product_id>", methods=["PUT"])
 def update_products(product_id):
     """
@@ -164,6 +159,7 @@ def update_products(product_id):
     product.id = product_id
     product.update()
     return product.serialize(), status.HTTP_200_OK
+
 
 ######################################################################
 # DELETE A PRODUCT

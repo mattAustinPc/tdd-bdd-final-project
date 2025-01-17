@@ -112,8 +112,8 @@ class TestProductModel(unittest.TestCase):
         self.assertEqual(found_product.id, product.id)
         self.assertEqual(found_product.name, product.name)
         self.assertEqual(found_product.description, product.description)
-        self.assertEqual(found_product.price, product.price) 
-        
+        self.assertEqual(found_product.price, product.price)
+
     def test_update_a_product(self):
         """It should Update a Product"""
         product = ProductFactory()
@@ -131,14 +131,14 @@ class TestProductModel(unittest.TestCase):
         products = Product.all()
         self.assertEqual(len(products), 1)
         self.assertEqual(products[0].id, original_id)
-        self.assertEqual(products[0].description, "testing")    
+        self.assertEqual(products[0].description, "testing")
 
     def test_update_a_product_empty_id(self):
         """It should error on attempt to update a Product when no id provided """
         product = ProductFactory()
         product.id = None
         self.assertRaises(DataValidationError, product.update)
-        
+
     def test_delete_a_product(self):
         """It should Delete a Product"""
         product = ProductFactory()
@@ -147,7 +147,7 @@ class TestProductModel(unittest.TestCase):
         # delete the product and make sure it isn't in the database
         product.delete()
         self.assertEqual(len(Product.all()), 0)
-        
+
     def test_list_all_products(self):
         """It should List all Products in the database"""
         products = Product.all()
@@ -159,8 +159,8 @@ class TestProductModel(unittest.TestCase):
         # See if we get back 5 products
         products = Product.all()
         self.assertEqual(len(products), 5)
-    
-    def test_find_by_name(self):        
+        
+    def test_find_by_name(self):
         """It should Find a Product by Name"""
         products = ProductFactory.create_batch(5)
         for product in products:
@@ -172,7 +172,7 @@ class TestProductModel(unittest.TestCase):
         for product in found:
             self.assertEqual(product.name, name)
 
-    def test_find_by_availability(self):            
+    def test_find_by_availability(self):
         """It should Find Products by Availability"""
         products = ProductFactory.create_batch(10)
         for product in products:
@@ -183,8 +183,8 @@ class TestProductModel(unittest.TestCase):
         self.assertEqual(found.count(), count)
         for product in found:
             self.assertEqual(product.available, available)
-    
-    def test_find_by_category(self):            
+
+    def test_find_by_category(self):
         """It should Find Products by Category"""
         products = ProductFactory.create_batch(10)
         for product in products:
@@ -195,8 +195,8 @@ class TestProductModel(unittest.TestCase):
         self.assertEqual(found.count(), count)
         for product in found:
             self.assertEqual(product.category, category)
-            
-    def test_find_by_price(self):        
+
+    def test_find_by_price(self):
         """It should Find a Product by Price"""
         products = ProductFactory.create_batch(5)
         for product in products:
@@ -208,7 +208,7 @@ class TestProductModel(unittest.TestCase):
         for product in found:
             self.assertEqual(product.price, price)
 
-    def test_find_by_price_string(self):        
+    def test_find_by_price_string(self):
         """It should Find a Product by Price as a string"""
         products = ProductFactory.create_batch(5)
         for product in products:
@@ -219,35 +219,35 @@ class TestProductModel(unittest.TestCase):
         self.assertEqual(found.count(), count)
         for product in found:
             self.assertEqual(product.price, price)
-            
+
     def test_deserialize_error_on_null(self):
         """It should error on deserialize of null input"""
         product = ProductFactory()
-        self.assertRaises(DataValidationError, product.deserialize,None)
-            
+        self.assertRaises(DataValidationError, product.deserialize, None)
+
     def test_deserialize_error_available(self):
         """It should error on deserialize of non bool value for available"""
         product = ProductFactory()
-        product.available ="AVAILABLE"
-        test_dict =  {
+        product.available = "AVAILABLE"
+        test_dict = {
             "id": product.id,
             "name": product.name,
             "description": product.description,
             "price": str(product.price),
             "available": product.available,
-            "category": product.category.name 
+            "category": product.category.name
         }
-        self.assertRaises(DataValidationError, product.deserialize,test_dict)   
+        self.assertRaises(DataValidationError, product.deserialize, test_dict)
 
     def test_deserialize_error_category(self):
         """It should error on deserialize of invalid value for category"""
         product = ProductFactory()
-        test_dict =  {
+        test_dict = {
             "id": product.id,
             "name": product.name,
             "description": product.description,
             "price": str(product.price),
             "available": product.available,
-            "category": "SNJDHFHFHFHFH" # Bogus test not listed in category class
+            "category": "SNJDHFHFHFHFH"
         }
-        self.assertRaises(DataValidationError, product.deserialize,test_dict)  
+        self.assertRaises(DataValidationError, product.deserialize, test_dict)

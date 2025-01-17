@@ -21,7 +21,7 @@ import factory
 from factory.fuzzy import FuzzyChoice, FuzzyDecimal
 from service.models import Product, Category
 
-#Copied from solution in web page
+
 class ProductFactory(factory.Factory):
     """Creates fake products for testing"""
     class Meta:
